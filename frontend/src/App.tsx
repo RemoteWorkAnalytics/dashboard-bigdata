@@ -9,13 +9,15 @@ import {
   Menu, 
   X,
   TrendingUp,
-  AlertTriangle
+  AlertTriangle,
+  Radio
 } from 'lucide-react';
 
 import Overview from './pages/Overview';
 import MentalHealth from './pages/MentalHealth';
 import Productivity from './pages/Productivity';
 // import RiskAssessment from './pages/RiskAssessment';
+import RealTimeStats from './pages/RealTimeStats';
 
 const SidebarLink = ({ to, icon: Icon, label, active }: { to: string, icon: any, label: string, active: boolean }) => (
   <Link
@@ -31,7 +33,6 @@ const SidebarLink = ({ to, icon: Icon, label, active }: { to: string, icon: any,
   </Link>
 );
 
-// Changed children to optional to prevent potential type mismatch errors in strict environments
 const AppLayout = ({ children }: { children?: React.ReactNode }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
@@ -61,6 +62,7 @@ const AppLayout = ({ children }: { children?: React.ReactNode }) => {
 
           <nav className="flex-1 space-y-2">
             <SidebarLink to="/" icon={LayoutDashboard} label="Executive Overview" active={location.pathname === '/'} />
+            <SidebarLink to="/real-time" icon={Radio} label="Real-time (CMS)" active={location.pathname === '/real-time'} />
             <SidebarLink to="/mental-health" icon={BrainCircuit} label="Mental Health" active={location.pathname === '/mental-health'} />
             <SidebarLink to="/productivity" icon={TrendingUp} label="Productivity" active={location.pathname === '/productivity'} />
             <SidebarLink to="/risk" icon={ShieldAlert} label="Risk Assessment" active={location.pathname === '/risk'} />
@@ -80,10 +82,10 @@ const AppLayout = ({ children }: { children?: React.ReactNode }) => {
 
       {/* Main Content */}
       <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : ''}`}>
-        {/* Fixed border-bottom to standard border-b Tailwind class */}
         <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 py-4 flex justify-between items-center">
           <h2 className="text-lg font-semibold text-slate-800">
             {location.pathname === '/' && 'Executive Overview'}
+            {location.pathname === '/real-time' && 'Real-time Analytics - Count-Min Sketch'}
             {location.pathname === '/mental-health' && 'Mental Health Analytics'}
             {location.pathname === '/productivity' && 'Productivity & Performance'}
             {location.pathname === '/risk' && 'Predictive Risk Model'}
@@ -115,6 +117,7 @@ export default function App() {
       <AppLayout>
         <Routes>
           <Route path="/" element={<Overview />} />
+          <Route path="/real-time" element={<RealTimeStats />} />
           <Route path="/mental-health" element={<MentalHealth />} />
           <Route path="/productivity" element={<Productivity />} />
           {/* <Route path="/risk" element={<RiskAssessment />} /> */}
