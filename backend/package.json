@@ -1,5 +1,21 @@
 {
+<<<<<<< HEAD
   "dependencies": {
+=======
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+>>>>>>> c2fc7311b8dda07a7279521fd76542fb8dd6e257
     "mongodb": "^7.0.0"
   }
 }

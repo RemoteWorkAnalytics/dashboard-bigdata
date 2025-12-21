@@ -1,4 +1,3 @@
-
 export interface DailyStat {
   date: string;
   stressLevel: number;
@@ -33,4 +32,19 @@ export interface RiskPrediction {
   confidence: number;
   recommendations: string[];
   explanation: string;
+}
+
+/* ===== CMS Real-Time ===== */
+
+export interface CMSStat {
+  label: string;
+  estimate: number;
+  color: string;
+}
+
+export interface RealTimeCMSData {
+  timestamp: string;
+  stressLevels: CMSStat[];
+  productivityChanges: CMSStat[];
+  locations: CMSStat[];
 }
