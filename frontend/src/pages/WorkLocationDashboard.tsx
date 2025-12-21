@@ -13,9 +13,7 @@ import {
   Cell
 } from "recharts";
 
-/* =========================
-   Types
-   ========================= */
+
 type ImpactData = {
   workLocation: string;
   totalEmployees: number;
@@ -24,9 +22,7 @@ type ImpactData = {
   remoteEffectiveness: number;
 };
 
-/* =========================
-   Card
-   ========================= */
+
 const StatCard = ({ title, value }: { title: string; value: number | string }) => (
   <div className="bg-white p-6 rounded-xl border shadow-sm">
     <h4 className="text-sm text-slate-500">{title}</h4>
@@ -36,9 +32,7 @@ const StatCard = ({ title, value }: { title: string; value: number | string }) =
 
 const COLORS = ["#6366f1", "#10b981", "#f59e0b"];
 
-/* =========================
-   Component
-   ========================= */
+
 const WorkLocationImpact: React.FC = () => {
   const [data, setData] = useState<ImpactData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -68,7 +62,6 @@ const WorkLocationImpact: React.FC = () => {
   return (
     <div className="space-y-8">
 
-      {/* Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <StatCard title="Total Employees" value={totalEmployees} />
         <StatCard
@@ -85,7 +78,6 @@ const WorkLocationImpact: React.FC = () => {
         />
       </div>
 
-      {/* Pie Chart */}
       <div className="bg-white p-6 rounded-xl border h-80">
         <ResponsiveContainer>
           <PieChart>
@@ -105,7 +97,6 @@ const WorkLocationImpact: React.FC = () => {
         </ResponsiveContainer>
       </div>
 
-      {/* Bar Chart */}
       <div className="bg-white p-6 rounded-xl border h-80">
         <ResponsiveContainer>
           <BarChart data={data}>

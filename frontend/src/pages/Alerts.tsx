@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BellRing, AlertCircle, ShieldAlert } from 'lucide-react';
 
-/* =======================
-   Data Model
-======================= */
+
 interface BurnoutAlert {
   _id: string; 
   department: string;
@@ -13,11 +11,8 @@ interface BurnoutAlert {
   recommendation: string;
 }
 
-/* =======================
-   Component
-======================= */
+
 const BurnoutDashboard: React.FC = () => {
-  // التأكد من تهيئة الحالة كمصفوفة فارغة
   const [alerts, setAlerts] = useState<BurnoutAlert[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,25 +23,23 @@ const BurnoutDashboard: React.FC = () => {
         return res.json();
       })
       .then(data => {
-        // حماية أساسية: التأكد أن البيانات القادمة مصفوفة
         if (Array.isArray(data)) {
           setAlerts(data);
         } else {
           console.error("Expected array but got:", data);
-          setAlerts([]); // نمنع الـ crash بتصفير المصفوفة
+          setAlerts([]); 
         }
         setLoading(false);
       })
       .catch((err) => {
         console.error("Fetch alerts failed:", err);
-        setAlerts([]); // تصفير البيانات في حال فشل الـ API
+        setAlerts([]); 
         setLoading(false);
       });
   };
 
   useEffect(() => {
     fetchAlerts();
-    // تحديث تلقائي كل 10 ثوانٍ (Streaming simulation)
     const interval = setInterval(fetchAlerts, 10000);
     return () => clearInterval(interval);
   }, []);
@@ -62,7 +55,6 @@ const BurnoutDashboard: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto space-y-6 py-6 animate-in fade-in duration-500">
 
-      {/* ===== Header ===== */}
       <div className="bg-rose-600 rounded-2xl p-8 text-white shadow-lg">
         <div className="flex items-center gap-3 mb-2">
           <BellRing size={20} className="animate-bounce" />
@@ -79,7 +71,6 @@ const BurnoutDashboard: React.FC = () => {
         </p>
       </div>
 
-      {/* ===== Alerts Section ===== */}
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h3 className="text-xl font-black text-slate-800">
@@ -90,7 +81,6 @@ const BurnoutDashboard: React.FC = () => {
           </span>
         </div>
 
-        {/* ===== Content Grid ===== */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {loading ? (
             <div className="col-span-full bg-white rounded-xl p-12 text-center border border-slate-100 shadow-sm">
@@ -117,7 +107,6 @@ const BurnoutDashboard: React.FC = () => {
                   alert.avgStress > 2.5 ? 'border-rose-600' : 'border-amber-400'
                 }`}
               >
-                {/* Meta Information */}
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider">
@@ -132,12 +121,10 @@ const BurnoutDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Department Info */}
                 <h4 className="text-xl font-bold text-slate-800 mb-2">
                   {alert.department}
                 </h4>
 
-                {/* Metrics */}
                 <div className="mb-4">
                   <p className="text-sm text-slate-600 leading-relaxed">
                     Sustained stress average: 
@@ -151,7 +138,6 @@ const BurnoutDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Actionable Recommendation */}
                 <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
@@ -169,7 +155,6 @@ const BurnoutDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* ===== Dashboard Footer ===== */}
       <div className="flex items-center justify-center gap-6 pt-6 border-t border-slate-200">
          <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
