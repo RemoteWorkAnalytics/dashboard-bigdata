@@ -10,7 +10,9 @@ import {
   X,
   TrendingUp,
   AlertTriangle,
-  Radio
+  Radio,
+  CalendarDays,
+  BellRing
 } from 'lucide-react';
 
 import Overview from './pages/Overview';
@@ -18,6 +20,8 @@ import MentalHealth from './pages/MentalHealth';
 import Productivity from './pages/Productivity';
 // import RiskAssessment from './pages/RiskAssessment';
 import RealTimeStats from './pages/RealTimeStats';
+// import DailyReports from './pages/DailyReports';
+import AlertsAndTalent from './pages/AlertsAndTalent';
 
 const SidebarLink = ({ to, icon: Icon, label, active }: { to: string, icon: any, label: string, active: boolean }) => (
   <Link
@@ -61,7 +65,9 @@ const AppLayout = ({ children }: { children?: React.ReactNode }) => {
           </div>
 
           <nav className="flex-1 space-y-2">
-            <SidebarLink to="/" icon={LayoutDashboard} label="Executive Overview" active={location.pathname === '/'} />
+            <SidebarLink to="/" icon={LayoutDashboard} label="Overview" active={location.pathname === '/'} />
+            <SidebarLink to="/daily-reports" icon={CalendarDays} label="Daily Reports" active={location.pathname === '/daily-reports'} />
+            <SidebarLink to="/alerts" icon={BellRing} label="Alerts & Talent" active={location.pathname === '/alerts'} />
             <SidebarLink to="/real-time" icon={Radio} label="Real-time (CMS)" active={location.pathname === '/real-time'} />
             <SidebarLink to="/mental-health" icon={BrainCircuit} label="Mental Health" active={location.pathname === '/mental-health'} />
             <SidebarLink to="/productivity" icon={TrendingUp} label="Productivity" active={location.pathname === '/productivity'} />
@@ -85,16 +91,17 @@ const AppLayout = ({ children }: { children?: React.ReactNode }) => {
         <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 py-4 flex justify-between items-center">
           <h2 className="text-lg font-semibold text-slate-800">
             {location.pathname === '/' && 'Executive Overview'}
+            {location.pathname === '/daily-reports' && 'Daily Performance Reports'}
+            {location.pathname === '/alerts' && 'Alerts & Recognition Spotlight'}
             {location.pathname === '/real-time' && 'Real-time Analytics - Count-Min Sketch'}
             {location.pathname === '/mental-health' && 'Mental Health Analytics'}
             {location.pathname === '/productivity' && 'Productivity & Performance'}
             {location.pathname === '/risk' && 'Predictive Risk Model'}
           </h2>
           <div className="flex items-center gap-4">
-            <div className="flex -space-x-2">
-              <img src="https://picsum.photos/32/32?random=1" alt="Member 1" className="w-8 h-8 rounded-full border-2 border-white" />
-              <img src="https://picsum.photos/32/32?random=2" alt="Member 2" className="w-8 h-8 rounded-full border-2 border-white" />
-              <img src="https://picsum.photos/32/32?random=3" alt="Member 3" className="w-8 h-8 rounded-full border-2 border-white" />
+            <div className="relative">
+               <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse" />
+               <BellRing className="text-slate-400" size={20} />
             </div>
             <div className="h-8 w-px bg-slate-200 mx-2" />
             <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors">
@@ -117,6 +124,8 @@ export default function App() {
       <AppLayout>
         <Routes>
           <Route path="/" element={<Overview />} />
+          {/* <Route path="/daily-reports" element={<DailyReports />} /> */}
+          <Route path="/alerts" element={<AlertsAndTalent />} />
           <Route path="/real-time" element={<RealTimeStats />} />
           <Route path="/mental-health" element={<MentalHealth />} />
           <Route path="/productivity" element={<Productivity />} />

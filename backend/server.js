@@ -3,39 +3,58 @@ const { MongoClient } = require('mongodb');
 const cors = require('cors');
 
 const app = express();
- 
 app.use(cors());
 
 const MONGO_URI = "mongodb://127.0.0.1:27017"; 
-const DB_NAME = "employeeAnalyticsDB";
-let db;
+ 
+let dbEmployee;  
+let dbAnalytics;  
 
  
 MongoClient.connect(MONGO_URI)
   .then(client => {
-    db = client.db(DB_NAME);
-    console.log("  Connected to MongoDB: Listening for Dashboard updates");
+    
+    dbEmployee = client.db("employeeAnalyticsDB");
+    dbAnalytics = client.db("analytics");
+
+    console.log("✅ Connected to MongoDB Multi-DB System:");
+    console.log("   - [employeeAnalyticsDB] initialized for Stats");
+    console.log("   - [analytics] initialized for Alerts");
   })
   .catch(err => console.error("  MongoDB Connection Error:", err));
 
  
 app.get('/api/stats', async (req, res) => {
   try {
-    if (!db) return res.status(500).json({ error: "Database not initialized" });
+    if (!dbEmployee) return res.status(500).json({ error: "Employee DB not initialized" });
 
-    const stats = await db.collection("cmsDashboard").findOne({ _id: "live_counts" });
+    const stats = await dbEmployee.collection("cmsDashboard").findOne({ _id: "live_counts" });
     
-    if (!stats) {
-        return res.status(404).json({ message: "No live data found. Ensure Spark app is running." });
-    }
-
+    if (!stats) return res.status(404).json({ message: "No live stats found." });
     res.json(stats);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
  
+app.get('/api/alerts', async (req, res) => {
+  try {
+    if (!dbAnalytics) return res.status(500).json({ error: "Analytics DB not initialized" });
+
+    const alerts = await dbAnalytics.collection("dept_burnout_alerts")
+      .find()
+      .sort({ alertTimestamp: -1 }) 
+      .toArray();
+
+    res.json(alerts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 const PORT = 5000;
 app.listen(PORT, () => {
-  console.log(`  API Server ready at http://localhost:${PORT}/api/stats`);
+  console.log(`  API Gateway ready at http://localhost:${PORT}`);
+  console.log(`  Stats Endpoint: http://localhost:${PORT}/api/stats`);
+  console.log(`  Alerts Endpoint: http://localhost:${PORT}/api/alerts`);
 });
