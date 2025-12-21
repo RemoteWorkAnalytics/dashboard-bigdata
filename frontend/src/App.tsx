@@ -17,12 +17,9 @@ import {
 
 import RealTimeStats from './pages/RealTimeStats';
 import BurnoutDashboard from './pages/Alerts';
-import WorkLocationDashboard from './pages/WorkLocationDashboard';
-import WorkLocationImpact from './pages/WorkLocationDashboard';
 
-/* =========================
-   Sidebar Link
-   ========================= */
+
+
 const SidebarLink = ({
   to,
   icon: Icon,
@@ -47,9 +44,7 @@ const SidebarLink = ({
   </Link>
 );
 
-/* =========================
-   Layout
-   ========================= */
+
 const AppLayout = ({ children }: { children?: React.ReactNode }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
@@ -79,6 +74,7 @@ const AppLayout = ({ children }: { children?: React.ReactNode }) => {
             <SidebarLink to="/" icon={LayoutDashboard} label="Overview" active={location.pathname === '/'} />
             <SidebarLink to="/real-time" icon={Radio} label="Real-time (CMS)" active={location.pathname === '/real-time'} />
             <SidebarLink to="/alerts" icon={BellRing} label="Alerts" active={location.pathname === '/alerts'} />
+            <SidebarLink to="/access-mental-health" icon={ShieldAlert} label="Access & Mental Health" active={location.pathname === '/access-mental-health'} />
           
           </nav>
 
@@ -107,15 +103,12 @@ const AppLayout = ({ children }: { children?: React.ReactNode }) => {
   );
 };
 
-/* =========================
-   App
-   ========================= */
+
 export default function App() {
   return (
     <Router>
       <AppLayout>
         <Routes>
-          <Route path="/" element={<WorkLocationImpact />} />
           <Route path="/alerts" element={<BurnoutDashboard />} />
           <Route path="/real-time" element={<RealTimeStats />} />
         </Routes>
