@@ -1,5 +1,10 @@
-
-import { DailyStat, EmployeeOverview, ProductivityData, StressFactor } from './types';
+import {
+  DailyStat,
+  EmployeeOverview,
+  ProductivityData,
+  StressFactor,
+  RealTimeCMSData,
+} from './types';
 
 export const OVERVIEW_STATS: EmployeeOverview = {
   totalEmployees: 1248,
@@ -31,8 +36,32 @@ export const PERFORMANCE_DATA: ProductivityData[] = [
   { sleepQuality: 'Excellent', productivityScore: 95, avgMeetings: 2, burnoutScore: 15 },
 ];
 
+/* ✅ هذا كان ناقص */
 export const SCATTER_PERFORMANCE = Array.from({ length: 50 }).map((_, i) => ({
   meetings: Math.floor(Math.random() * 10) + 1,
   burnout: Math.floor(Math.random() * 80) + (i % 5) * 10,
   productivity: Math.floor(Math.random() * 100),
 }));
+
+export const generateCMSData = (): RealTimeCMSData => {
+  const baseTotal = 1200;
+
+  return {
+    timestamp: new Date().toLocaleTimeString(),
+    stressLevels: [
+      { label: 'Low', estimate: Math.floor(baseTotal * 0.45), color: '#10b981' },
+      { label: 'Medium', estimate: Math.floor(baseTotal * 0.35), color: '#f59e0b' },
+      { label: 'High', estimate: Math.floor(baseTotal * 0.2), color: '#ef4444' },
+    ],
+    productivityChanges: [
+      { label: 'Increased', estimate: 320, color: '#6366f1' },
+      { label: 'Decreased', estimate: 140, color: '#f43f5e' },
+      { label: 'No Change', estimate: 740, color: '#94a3b8' },
+    ],
+    locations: [
+      { label: 'Remote', estimate: 650, color: '#8b5cf6' },
+      { label: 'Office A', estimate: 300, color: '#3b82f6' },
+      { label: 'Office B', estimate: 250, color: '#06b6d4' },
+    ],
+  };
+};
