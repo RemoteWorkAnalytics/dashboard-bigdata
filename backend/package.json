@@ -1,4 +1,6 @@
 {
+  "dependencies": {
+
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
@@ -14,4 +16,4 @@
     "express": "^5.2.1",
     "mongodb": "^7.0.0"
   }
-}
+}}
