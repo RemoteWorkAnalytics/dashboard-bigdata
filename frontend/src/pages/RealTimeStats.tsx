@@ -88,7 +88,6 @@ const RealTimeStats: React.FC = () => {
 
   return (
     <div className="p-6 space-y-8 bg-slate-50 min-h-screen font-sans">
-      {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl border border-slate-200 shadow-sm gap-4">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
@@ -118,7 +117,6 @@ const RealTimeStats: React.FC = () => {
         </div>
       </div>
 
-      {/* KPI Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
           <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Estimates</p>
@@ -139,10 +137,8 @@ const RealTimeStats: React.FC = () => {
         </div>
       </div>
 
-      {/* Visual Charts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
-        {/* Stress Levels Bar Chart */}
         <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex items-center gap-2 mb-6">
             <TrendingUp className="text-indigo-500" />
@@ -168,7 +164,6 @@ const RealTimeStats: React.FC = () => {
           </div>
         </div>
 
-        {/* Work Location Pie Chart */}
         <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
           <div className="flex items-center gap-2 mb-6">
             <MapPin className="text-indigo-500" />
@@ -198,7 +193,6 @@ const RealTimeStats: React.FC = () => {
           </div>
         </div>
 
-        {/* Productivity Bar Chart */}
         <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm lg:col-span-2">
           <h3 className="text-lg font-bold text-slate-800 mb-6">Productivity Changes (Estimates)</h3>
           <div className="h-[300px]">

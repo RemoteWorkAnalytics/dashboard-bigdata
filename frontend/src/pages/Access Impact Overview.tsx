@@ -45,7 +45,6 @@ const WorkLocationDashboardd: React.FC = () => {
     fetch('http://localhost:5000/api/work-location-impact')
       .then(res => res.json())
       .then(result => {
-        // Ensure numeric fields
         const formatted = result.map((d: any) => ({
           workLocation: d.workLocation,
           totalEmployees: Number(d.totalEmployees),
@@ -69,7 +68,6 @@ const WorkLocationDashboardd: React.FC = () => {
       </div>
     );
 
-  // Compute totals for cards
   const totalEmployees = data.reduce((acc, d) => acc + d.totalEmployees, 0);
   const avgStressOverall =
     data.reduce((acc, d) => acc + d.avgStress, 0) / data.length;
@@ -80,7 +78,6 @@ const WorkLocationDashboardd: React.FC = () => {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      {/* ================== CARDS ================== */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard title="Total Employees" value={totalEmployees} color="indigo" />
         <StatCard title="Avg Stress" value={avgStressOverall.toFixed(2)} color="red" />
@@ -96,7 +93,6 @@ const WorkLocationDashboardd: React.FC = () => {
         />
       </div>
 
-      {/* ================== PIE CHART ================== */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <h3 className="text-lg font-bold text-slate-800 mb-4">Employees Distribution</h3>
         <div className="h-64">
@@ -128,7 +124,6 @@ const WorkLocationDashboardd: React.FC = () => {
         </p>
       </div>
 
-      {/* ================== BAR CHARTS ================== */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <BarChartCard
           data={data}
