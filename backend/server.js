@@ -14,7 +14,7 @@ let dbAnalytics;
 MongoClient.connect(MONGO_URI)
   .then(client => {
     
-    dbEmployee = client.db("employeeAnalyticsDB");
+    dbEmployee = client.db("analytics");
     dbAnalytics = client.db("analytics");
 
     console.log("✅ Connected to MongoDB Multi-DB System:");
@@ -41,7 +41,7 @@ app.get('/api/alerts', async (req, res) => {
   try {
     if (!dbAnalytics) return res.status(500).json({ error: "Analytics DB not initialized" });
 
-    const alerts = await dbAnalytics.collection("dept_burnout_alerts")
+    const alerts = await dbAnalytics.collection("analytics.dept_burnout_alerts")
       .find()
       .sort({ alertTimestamp: -1 }) 
       .toArray();
