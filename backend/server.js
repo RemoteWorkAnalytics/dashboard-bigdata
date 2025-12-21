@@ -1,57 +1,64 @@
-const express = require("express");
-const { MongoClient } = require("mongodb");
-const cors = require("cors");
+const express = require('express');
+const { MongoClient } = require('mongodb');
+const cors = require('cors');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
 
-const MONGO_URI = "mongodb://127.0.0.1:27017";
-const DB_NAME = "analytics";
+const MONGO_URI = "mongodb://127.0.0.1:27017"; 
+ 
+let dbEmployee;  
+let dbAnalytics;  
 
-let db;
-
-/* =========================
-   Mongo Connection
-   ========================= */
+ 
 MongoClient.connect(MONGO_URI)
   .then(client => {
-    db = client.db(DB_NAME);
-    console.log("✅ Connected to MongoDB:", DB_NAME);
+    
+    dbEmployee = client.db("analytics");
+    dbAnalytics = client.db("analytics");
+
+    console.log("Connected to MongoDB Multi-DB System:");
+    console.log("   - [employeeAnalyticsDB] initialized for Stats");
+    console.log("   - [analytics] initialized for Alerts");
   })
-  .catch(err => console.error("❌ MongoDB Connection Error:", err));
+  .catch(err => console.error("  MongoDB Connection Error:", err));
 
-/* =========================
-   REAL-TIME STATS (Dashboard)
-   Used by RealTimeStats.tsx
-   ========================= */
-app.get("/api/stats", async (req, res) => {
+ 
+app.get('/api/stats', async (req, res) => {
   try {
-    if (!db) return res.status(500).json({ error: "DB not initialized" });
+    if (!dbEmployee) return res.status(500).json({ error: "Employee DB not initialized" });
 
-    const stats = await db
-      .collection("cmsDashboard")
-      .findOne({ _id: "live_counts" });
-
-    if (!stats) return res.status(404).json({ message: "No stats found" });
-
+    const stats = await dbEmployee.collection("cmsDashboard").findOne({ _id: "live_counts" });
+    
+    if (!stats) return res.status(404).json({ message: "No live stats found." });
     res.json(stats);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-/* =========================
-   ALERTS
-   ========================= */
-app.get("/api/alerts", async (req, res) => {
+app.get('/api/work-location-impact', async (req, res) => {
   try {
-    if (!db) return res.status(500).json({ error: "DB not initialized" });
+    if (!dbAnalytics) return res.status(500).json({ error: "Analytics DB not initialized" });
 
-    const alerts = await db
-      .collection("dept_burnout_alerts")
+    const alerts = await dbAnalytics.collection("worklocation_impact")
       .find()
-      .sort({ alertTimestamp: -1 })
+      .sort({ alertTimestamp: -1 }) 
+      .toArray();
+
+    res.json(alerts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+ 
+app.get('/api/alerts', async (req, res) => {
+  try {
+    if (!dbAnalytics) return res.status(500).json({ error: "Analytics DB not initialized" });
+
+    const alerts = await dbAnalytics.collection("analytics.dept_burnout_alerts")
+      .find()
+      .sort({ alertTimestamp: -1 }) 
       .toArray();
 
     res.json(alerts);
@@ -60,46 +67,9 @@ app.get("/api/alerts", async (req, res) => {
   }
 });
 
-/* =========================
-   WORK LOCATION IMPACT
-   Used by:
-   - WorkLocationImpact
-   - WorkLocationDashboardd
-   ========================= */
-app.get("/api/work-location-impact", async (req, res) => {
-  try {
-    if (!db) return res.status(500).json({ error: "DB not initialized" });
-
-    const data = await db
-      .collection("work_location_impact")
-      .find({})
-      .sort({ workLocation: 1 })
-      .toArray();
-
-    /*
-      Expected document shape:
-      {
-        workLocation: "Remote",
-        totalEmployees: 120,
-        avgStress: 2.3,
-        overallWellbeing: 3.8,
-        remoteEffectiveness: 4.1
-      }
-    */
-
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-/* =========================
-   Server
-   ========================= */
 const PORT = 5000;
 app.listen(PORT, () => {
-  console.log("🚀 API Server running on http://localhost:" + PORT);
-  console.log("   → /api/stats");
-  console.log("   → /api/alerts");
-  console.log("   → /api/work-location-impact");
+  console.log(`  API Gateway ready at http://localhost:${PORT}`);
+  console.log(`  Stats Endpoint: http://localhost:${PORT}/api/stats`);
+  console.log(`  Alerts Endpoint: http://localhost:${PORT}/api/alerts`);
 });
